@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Registration.Abstractions.DbEntities;
 using Registration.Abstractions.Interfaces;
 using Registration.Abstractions.Models;
 
@@ -20,7 +21,7 @@ namespace Registration.DAL.Repositories
         /// Method to create a user in the database
         /// </summary>
         /// <param name="user">User to be created</param>
-        public async Task CreateAsync(User user)
+        public async Task CreateAsync(UserDbEntity user)
         {
             await _context.Users.AddAsync(user);
 
@@ -30,7 +31,7 @@ namespace Registration.DAL.Repositories
         /// <summary>
         /// Method to get all users including their companies
         /// </summary>
-        public async Task<List<User>> GetAllWithCompaniesAsync()
+        public async Task<List<UserDbEntity>> GetAllWithCompaniesAsync()
         {
             return await _context.Users
                 .Include(u => u.Company)

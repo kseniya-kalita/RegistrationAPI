@@ -4,5 +4,11 @@
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
+
+        public Company(Guid id, string name)
+        {
+            Id = id;
+            Name = name;
+        }
     }
 }

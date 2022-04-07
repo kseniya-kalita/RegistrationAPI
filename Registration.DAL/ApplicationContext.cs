@@ -1,12 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Registration.Abstractions.Models;
+using Registration.Abstractions.DbEntities;
 
 namespace Registration.DAL
 {
     public class ApplicationContext : DbContext
     {
-        public DbSet<User> Users { get; set; }
-        public DbSet<Company> Companies { get; set; }
+        public DbSet<UserDbEntity> Users { get; set; }
+        public DbSet<CompanyDbEntity> Companies { get; set; }
 
         public ApplicationContext(DbContextOptions options) : base(options)
         {
@@ -16,27 +16,27 @@ namespace Registration.DAL
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Company>()
+            modelBuilder.Entity<CompanyDbEntity>()
                     .Property(u => u.Id)
                     .HasColumnName("id");
 
-            modelBuilder.Entity<Company>()
+            modelBuilder.Entity<CompanyDbEntity>()
                     .HasAlternateKey(u => u.Name)
                     .HasName("name");
 
-            modelBuilder.Entity<User>()
+            modelBuilder.Entity<UserDbEntity>()
                     .HasKey(u => u.Id)
                     .HasName("id");
             
-            modelBuilder.Entity<User>()
+            modelBuilder.Entity<UserDbEntity>()
                     .Property(u => u.Email)
                     .HasColumnName("email");
             
-            modelBuilder.Entity<User>()
+            modelBuilder.Entity<UserDbEntity>()
                     .Property(u => u.Password)
                     .HasColumnName("password");
             
-            modelBuilder.Entity<User>()
+            modelBuilder.Entity<UserDbEntity>()
                     .Property(u => u.CompanyId)
                     .HasColumnName("company_id");
 

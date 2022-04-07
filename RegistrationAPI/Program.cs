@@ -1,9 +1,11 @@
+using Domain.AggregatesModel.UserAggragate;
+using Infrastructure;
 using Microsoft.EntityFrameworkCore;
-using Registration.Abstractions.Interfaces;
 using Registration.DAL;
 using Registration.DAL.Repositories;
 using Registration.Services;
-using RegistrationAPI.Profiles;
+using RegistrationAPI.Infrastructure;
+using RegistrationAPI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,18 +15,16 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddAutoMapper(typeof(MappingProfile));
 
 ConfigurationManager configuration = builder.Configuration;
 var connectionString = configuration["ConnectionStrings:DefaultConnection"];
 
 builder.Services.AddDbContext<ApplicationContext>(options => options.UseNpgsql(connectionString));
-builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ICompanyRepository, CompanyRepository>();
-builder.Services.AddScoped<IUserManagementService, UserManagementService>();
+builder.Services.AddScoped<ICompanyManagementService, CompanyManagementService>();
 
 var app = builder.Build();
-
+app.UseMiddleware<ExceptionMiddleware>();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {

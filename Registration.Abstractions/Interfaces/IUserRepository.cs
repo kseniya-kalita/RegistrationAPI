@@ -1,10 +1,11 @@
-﻿using Registration.Abstractions.Models;
+﻿using Registration.Abstractions.DbEntities;
+using Registration.Abstractions.Models;
 
 namespace Registration.Abstractions.Interfaces
 {
     public interface IUserRepository
     {
-        Task CreateAsync(User user);
-        Task<List<User>> GetAllWithCompaniesAsync();
+        Task CreateAsync(UserDbEntity user);
+        Task<List<UserDbEntity>> GetAllWithCompaniesAsync();
     }
 }

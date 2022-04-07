@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Registration.Abstractions.DbEntities;
 using Registration.Abstractions.Dtos;
 using Registration.Abstractions.Dtos.Responses;
 using Registration.Abstractions.Interfaces;
@@ -31,17 +32,16 @@ namespace Registration.Services
         public async Task<UserViewModel> CreateWithCompanyAsync(UserForCreationDto userDto)
         {
             var company = _companyRepository.GetByName(userDto.Company.Name);
-            User user = new User
-            {
-                Company = company ?? new Company
-                {
-                    Name = userDto.Company.Name
-                },
-                Email = userDto.Email,
-                Password = userDto.Password
-            };
+            
+            User user = new User(Guid.Empty, 
+                userDto.Email,
+                userDto.Password,
+                company?.Id ?? Guid.Empty, 
+                userDto.Company.Name);
 
-            await _userRepository.CreateAsync(user);
+            var dbUser = _mapper.Map<UserDbEntity>(user);
+            await _userRepository.CreateAsync(dbUser);
+            user = _mapper.Map<User>(dbUser);
             var userViewModel = _mapper.Map<UserViewModel>(user);
 
             return userViewModel;
